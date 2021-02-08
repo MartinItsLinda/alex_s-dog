@@ -57,7 +57,7 @@ public final class Main extends ListenerAdapter {
         Properties p = new Properties();
         p.load(new FileReader("./login.properties"));
 
-        JDABuilder.create(GatewayIntent.GUILD_MESSAGES)
+        JDABuilder.create(GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
                 .addEventListeners(new Main())
                 .setToken(p.getProperty("token"))
                 .build();
