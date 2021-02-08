@@ -16,3 +16,20 @@ h
 https://top.gg/bot/562773553561206787/
 
 pog
+
+
+# BUILD THE BOT OK
+
+```shell
+
+# do the first thing
+git clone https://github.com/alexisok/alex_s-dog
+
+#a
+cd alex_s-dog
+
+# u need maven first btw
+mvn clean compile assembly:single
+
+# jar is in ./target/
+```
