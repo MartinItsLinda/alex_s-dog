@@ -220,7 +220,7 @@ public final class Main extends ListenerAdapter {
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
         if(!event.getAuthor().isBot())
-            event.getMessage().reply("https://youtube.com/watch?v=dQw4w9WgXcQ").queue();
+            event.getAuthor().openPrivateChannel().complete().sendMessage("https://youtube.com/watch?v=dQw4w9WgXcQ").queue();
     }
 
     @Override
