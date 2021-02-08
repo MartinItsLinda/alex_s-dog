@@ -11,7 +11,7 @@ also this:
 
 ## INVITE LINKK!!!!111111111111111111!  1
 h
-[here](https://discord.com/oauth2/authorize?client_id=562773553561206787&permissions=68608&https%3A%2F%2Fdoes-not.cyou&response_type=code&scope=bot%20identify);
+[here](https://discord.com/oauth2/authorize?client_id=562773553561206787&permissions=68608&https%3A%2F%2Fdoes-not.cyou&response_type=code&scope=bot);
 
 https://top.gg/bot/562773553561206787/
 
