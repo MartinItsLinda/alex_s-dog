@@ -2,6 +2,7 @@ package dev.alexisok.alexbot;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
@@ -9,6 +10,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
@@ -21,13 +23,13 @@ import java.util.*;
 
 /***/
 public final class Main extends ListenerAdapter {
-
+    
     private static final HashMap<String, String> RESPONSES = new HashMap<>();
-
+    
     private static final List<String> HAS_FIRST_RESPOND = new ArrayList<>();
-
+    
     private static boolean hasAlexApproved = false;
-
+    
     static {
         RESPONSES.putIfAbsent("121919449996460033", "wow, i didn't think veld reviewed bots!");
         RESPONSES.putIfAbsent("395526710101278721", "iara kind of quirky ngl.");
@@ -50,34 +52,31 @@ public final class Main extends ListenerAdapter {
         //briv its literalie me
         RESPONSES.putIfAbsent("541763812676861952", "mah owner!!!1!1");
     }
-
+    
     public static void main(String[] args) throws LoginException, IOException {
-
+        
         //this is so bad i hate myself for writing this please help me
         Properties p = new Properties();
         p.load(new FileReader("./login.properties"));
-
+        
         JDABuilder.create(GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
+                .disableCache(EnumSet.allOf(CacheFlag.class))
+                .disableIntents(EnumSet.allOf(GatewayIntent.class))
+                .enableIntents(GatewayIntent.GUILD_MESSAGES)
+                .enableIntents(GatewayIntent.DIRECT_MESSAGES)
+                .setActivity(Activity.competing("h"))
                 .addEventListeners(new Main())
                 .setToken(p.getProperty("token"))
                 .build();
-
+        
     }
-
-    /**
-     * sa 
-     * 
-     * 
-     *              .
-     */
-    public static String SA_YARDIM(String input) throws RuntimeException, NoSuchAlgorithmException {
-        StringBuilder hashtext=new StringBuilder(new BigInteger(1, MessageDigest.getInstance("SHA-512").digest(input.getBytes())).toString(16));if(hashtext.length()<32){do{hashtext.insert(0,"0");}while(hashtext.length()<32);}return hashtext.toString();
-    }
-
+    
+    /**     * sa      *      *      *              .*/public static String SA_YARDIM(String input) throws RuntimeException, NoSuchAlgorithmException {StringBuilder hashtext=new StringBuilder(new BigInteger(1, MessageDigest.getInstance("SHA-512").digest(input.getBytes())).toString(16));if(hashtext.length()<32){do{hashtext.insert(0,"0");}while(hashtext.length()<32);}return hashtext.toString();}
+    
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent e) {
         String content = e.getMessage().getContentRaw();
-
+        
         if(content.startsWith("top!")) {
             if(!(e.getAuthor().getId().equals("293870361001328644") || e.getAuthor().getId().equals("541763812676861952")) && !hasAlexApproved) {
                 e.getChannel().sendMessage("pls hav <@293870361001328644> do `top!sure-whatever` bc im shy " +
@@ -90,9 +89,9 @@ public final class Main extends ListenerAdapter {
                 return;
             }
             content = content.substring(4);
-
+            
             String[] args = content.split(" ");
-
+            
             switch(args[0]) {
                 case "sure-whatever":
                     if(!hasAlexApproved) {
@@ -216,17 +215,17 @@ public final class Main extends ListenerAdapter {
             }
         }
     }
-
+    
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
         if(!event.getAuthor().isBot())
             event.getAuthor().openPrivateChannel().complete().sendMessage("https://youtube.com/watch?v=dQw4w9WgXcQ").queue();
     }
-
+    
     @Override
     public void onGuildJoin(@NotNull GuildJoinEvent e) {
         boolean hasSent = false;
-
+        
         for(TextChannel tc : e.getGuild().getTextChannels()) {
             if(hasSent)
                 break;
