@@ -58,7 +58,7 @@ public final class Main extends ListenerAdapter {
         System.out.println("alex_'s dog wants a nap....20%");
         Thread.sleep(new java.util.Random().nextInt(10_000));
         
-        final JDABuilder builder = JDABuilder.createLight(args[0], EnumSet.allOf(GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES));
+        final JDABuilder builder = JDABuilder.createLight(args[0], EnumSet.of(GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGES));
         
         System.out.println("alex_'s dog wants a nap....40%");
         Thread.sleep(new java.util.Random().nextInt(10_000));
