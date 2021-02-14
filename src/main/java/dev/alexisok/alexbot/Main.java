@@ -55,18 +55,10 @@ public final class Main extends ListenerAdapter {
     
     public static void main(String[] args) throws LoginException, IOException {
         
-        //this is so bad i hate myself for writing this please help me
-        Properties p = new Properties();
-        p.load(new FileReader("./login.properties"));
-        
-        JDABuilder.create(GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
-                .disableCache(EnumSet.allOf(CacheFlag.class))
-                .disableIntents(EnumSet.allOf(GatewayIntent.class))
-                .enableIntents(GatewayIntent.GUILD_MESSAGES)
-                .enableIntents(GatewayIntent.DIRECT_MESSAGES)
-                .setActivity(Activity.competing("h"))
+        JDABuilder.createLight(args[0], EnumSet.allOf(GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES))
+                .setBulkDeleteSplittingEnabled(false)
+                .setActivity(Activity.playing("h"))
                 .addEventListeners(new Main())
-                .setToken(p.getProperty("token"))
                 .build();
         
     }
@@ -75,7 +67,8 @@ public final class Main extends ListenerAdapter {
     
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent e) {
-        String content = e.getMessage().getContentRaw();
+        if(e.getAuthor().isBot()) return;
+        String content = e.getMessage().getContentRaw().toLowerCase();
         
         if(content.startsWith("top!")) {
             if(!(e.getAuthor().getId().equals("293870361001328644") || e.getAuthor().getId().equals("541763812676861952")) && !hasAlexApproved) {
@@ -90,7 +83,7 @@ public final class Main extends ListenerAdapter {
             }
             content = content.substring(4);
             
-            String[] args = content.split(" ");
+            String[] args = content.substring(0, content.indexOf(' '));
             
             switch(args[0]) {
                 case "sure-whatever":
@@ -114,11 +107,6 @@ public final class Main extends ListenerAdapter {
                             .queue();
                     return;
                 case "help": case "yardım": case "sa": case "yardim":
-                    
-                    //not having this happen again
-                    //sa yardim my friends
-                    if(e.getAuthor().isBot())
-                        return;
                     
                     e.getChannel().sendMessage("help for <@" + e.getJDA().getSelfUser().getId() + ">\n" +
                             "`token` - get the bot token\n" +
@@ -226,14 +214,8 @@ public final class Main extends ListenerAdapter {
     public void onGuildJoin(@NotNull GuildJoinEvent e) {
         boolean hasSent = false;
         
-        for(TextChannel tc : e.getGuild().getTextChannels()) {
-            if(hasSent)
-                break;
-            try {
-                tc.sendMessage("bruv").complete();
-                hasSent = true;
-            } catch(Throwable ignored) {}
-        }
-        System.out.printf("anyways%n");
+        e.getGuild().getTextChannelCache().stream().filter(TextChannel::canTalk).findFirst().ifPresent(channel -> {
+            channel.sendMessage("bruv").queue();
+        });
     }
 }
