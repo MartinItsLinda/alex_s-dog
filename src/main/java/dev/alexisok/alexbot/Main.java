@@ -53,13 +53,31 @@ public final class Main extends ListenerAdapter {
         RESPONSES.putIfAbsent("541763812676861952", "mah owner!!!1!1");
     }
     
-    public static void main(String[] args) throws LoginException, IOException {
+    public static void main(String[] args) throws LoginException, IOException, InterruptedException {
         
-        JDABuilder.createLight(args[0], EnumSet.allOf(GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES))
-                .setBulkDeleteSplittingEnabled(false)
-                .setActivity(Activity.playing("h"))
-                .addEventListeners(new Main())
-                .build();
+        System.out.println("alex_'s dog wants a nap....20%");
+        Thread.sleep(new java.util.Random().nextInt(10_000));
+        
+        final JDABuilder builder = JDABuilder.createLight(args[0], EnumSet.allOf(GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES));
+        
+        System.out.println("alex_'s dog wants a nap....40%");
+        Thread.sleep(new java.util.Random().nextInt(10_000));
+        builder.setBulkDeleteSplittingEnabled(false);
+        
+        System.out.println("alex_'s dog wants a nap....60%");
+        Thread.sleep(new java.util.Random().nextInt(10_000));
+        
+        builder.setActivity(Activity.playing("h"));
+        
+        System.out.println("alex_'s dog wants a nap....");
+        Thread.sleep(new java.util.Random().nextInt(10_000));
+      
+        builder.addEventListeners(new Main());
+        
+        System.out.println("alex_'s dog wants a nap....");
+        Thread.sleep(new java.util.Random().nextInt(10_000));
+        
+        builder.build();
         
     }
     
