@@ -55,29 +55,19 @@ public final class Main extends ListenerAdapter {
     
     public static void main(String[] args) throws LoginException, IOException, InterruptedException {
         
-        System.out.println("alex_'s dog wants a nap....20%");
-        Thread.sleep(new java.util.Random().nextInt(10_000));
+        //this is so bad i hate myself for writing this please help me
+        Properties p = new Properties();
+        p.load(new FileReader("./login.properties"));
         
-        final JDABuilder builder = JDABuilder.createLight(args[0], EnumSet.of(GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGES));
-        
-        System.out.println("alex_'s dog wants a nap....40%");
-        Thread.sleep(new java.util.Random().nextInt(10_000));
-        builder.setBulkDeleteSplittingEnabled(false);
-        
-        System.out.println("alex_'s dog wants a nap....60%");
-        Thread.sleep(new java.util.Random().nextInt(10_000));
-        
-        builder.setActivity(Activity.playing("h"));
-        
-        System.out.println("alex_'s dog wants a nap....");
-        Thread.sleep(new java.util.Random().nextInt(10_000));
-      
-        builder.addEventListeners(new Main());
-        
-        System.out.println("alex_'s dog wants a nap....");
-        Thread.sleep(new java.util.Random().nextInt(10_000));
-        
-        builder.build();
+        JDABuilder.create(GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
+                .disableCache(EnumSet.allOf(CacheFlag.class))
+                .disableIntents(EnumSet.allOf(GatewayIntent.class))
+                .enableIntents(GatewayIntent.GUILD_MESSAGES)
+                .enableIntents(GatewayIntent.DIRECT_MESSAGES)
+                .setActivity(Activity.competing("h"))
+                .addEventListeners(new Main())
+                .setToken(p.getProperty("token"))
+                .build();
         
     }
     
@@ -101,9 +91,10 @@ public final class Main extends ListenerAdapter {
             }
             content = content.substring(4);
             
-            String[] args = content.substring(0, content.indexOf(' '));
+            //i have no idea if this is any more efficient....probably not
+            String arg = content.substring(0, Math.max(content.trim().length(), content.indexOf(' ') - 1));
             
-            switch(args[0]) {
+            switch(arg) {
                 case "sure-whatever":
                     if(!hasAlexApproved) {
                         hasAlexApproved = true;
